@@ -29,10 +29,13 @@
 #include <power/tps65910.h>
 #include "board.h"
 
+#include <asm/arch-am33xx/mux.h>
+
 DECLARE_GLOBAL_DATA_PTR;
 
 #define GPIO_LCD_BACKLIGHT     2
 #define GPIO_BT_UART_SELECT    20
+#define GPIO_USER_BUTTON_INT   20
 #define GPIO_SOM_REV_BIT0_GPIO 77
 #define GPIO_SOM_REV_BIT1_GPIO 86
 #define GPIO_SOM_REV_BIT2_GPIO 75
@@ -258,9 +261,17 @@ int board_init(void)
 	gpio_request(GPIO_LCD_BACKLIGHT, "backlight");
 	gpio_direction_output(GPIO_LCD_BACKLIGHT, 0);
 
+#ifndef CONFIG_NINJA_SPHERE
 	/* mux bluetooth to omap */
 	gpio_request(GPIO_BT_UART_SELECT, "bt_uart_select");
 	gpio_direction_output(GPIO_BT_UART_SELECT, 1);
+#else
+	printf(" --> SOM configured for Ninja Sphere\n");
+	gpio_request(GPIO_USER_BUTTON_INT, "user_btn_int");
+	gpio_direction_input(GPIO_USER_BUTTON_INT);
+	/* fix for mux not sticking from mux.c configuration */
+	MUX_CFG(0x37, OFFSET(xdma_event_intr1));
+#endif
 
 #endif
 

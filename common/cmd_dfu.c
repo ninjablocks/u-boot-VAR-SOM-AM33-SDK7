@@ -38,7 +38,16 @@ static int do_dfu(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	int controller_index = simple_strtoul(usb_controller, NULL, 0);
 	board_usb_init(controller_index, USB_INIT_DEVICE);
 
-	g_dnl_register(s);
+	ret = g_dnl_register(s);
+	if (ret) {
+		g_dnl_unregister();
+		dfu_free_entities();
+		if (argc > 4 && strcmp(argv[4], "attempt") == 0)
+			return 1; // failed, but not a real failure, just a failed attempt
+		else
+			return ret;
+	}
+
 	while (1) {
 		if (dfu_reset())
 			/*
@@ -72,4 +81,5 @@ U_BOOT_CMD(dfu, CONFIG_SYS_MAXARGS, 1, do_dfu,
 	"    on device <dev>, attached to interface\n"
 	"    <interface>\n"
 	"    [list] - list available alt settings\n"
+	"    [attempt] - attempts to perform DFU, returning 0 if dfu complered, 1 otherwise\n"
 );

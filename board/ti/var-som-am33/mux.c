@@ -80,10 +80,19 @@ static struct module_pin_mux clkout_pin_mux[] = {
 	{-1},
 };
 
+#ifndef CONFIG_NINJA_SPHERE
 static struct module_pin_mux bt_uart_select_pin_mux[] = {
 	{OFFSET(xdma_event_intr1), MODE(7)},    /* GPIO0_20 */
 	{-1},
 };
+#else
+static struct module_pin_mux ninja_sphere_pin_mux[] = {
+	{OFFSET(spi0_sclk), MODE(7) | PULLUP_EN | PULLUDEN},	           /* GPIO0_2, LCD Backlight */
+	{OFFSET(gpmc_a0), MODE(7) | PULLUDEN | PULLUP_EN},                 /* GPIO0_16, LED Matrix nRST */
+	{OFFSET(xdma_event_intr1), MODE(7) | RXACTIVE | PULLUDEN | PULLUP_EN},        /* GPIO0_20, User Button -- N.B. this appears to be conflicting with bt_uart_select_pin_mux ?! */
+	{-1},
+};
+#endif
 
 static struct module_pin_mux rmii1_pin_mux[] = {
 	{OFFSET(mii1_crs), MODE(1) | RXACTIVE},     /* RMII1_CRS */
@@ -204,7 +213,14 @@ void enable_board_pin_mux(void)
 	configure_module_pin_mux(gpio0_2_pin_mux);
 	configure_module_pin_mux(gpio2_19_pin_mux);
 	configure_module_pin_mux(clkout_pin_mux);
+#ifndef CONFIG_NINJA_SPHERE
 	configure_module_pin_mux(bt_uart_select_pin_mux);
+#endif
 	configure_module_pin_mux(rgmii2_strapping_pin_mux);
+
+#ifdef CONFIG_NINJA_SPHERE
+	/* Ninja Sphere */
+	configure_module_pin_mux(ninja_sphere_pin_mux);
+#endif
 }
 

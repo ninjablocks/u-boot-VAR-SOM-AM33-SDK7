@@ -187,6 +187,10 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 		return -ENXIO;
 	}
 
+        /* only continue if someone is there on the other end */
+        if ((musb_readb(gadget->mregs, MUSB_DEVCTL) & MUSB_DEVCTL_VBUS) != MUSB_DEVCTL_VBUS)
+                return -EWOULDBLOCK;
+
 	ret = musb_gadget_start(&gadget->g, driver);
 	if (ret < 0) {
 		printf("gadget_start failed with %d\n", ret);
