@@ -3040,6 +3040,31 @@ ident_done:
 		name,
 		mtd->writesize, mtd->oobsize);
 
+	/* Read Unique ID */
+
+	/* Send the command for reading unique ID */
+	chip->cmdfunc(mtd, NAND_CMD_READ_UNIQUE_ID, 0x00, -1);
+
+	/* Read unique ID and shadow ID */
+	uint8_t unique_shadow[16], checksum;
+	int unique_attempts = 0, unique_index = 0;
+	do {
+		for (unique_index = 0; unique_index < 16; unique_index++) {
+			chip->unique_id[unique_index] = chip->read_byte(mtd);
+		}
+
+		for (unique_index = 0; unique_index < 16; unique_index++) {
+			unique_shadow[unique_index] = chip->read_byte(mtd);
+			checksum = (chip->unique_id[unique_index] ^ unique_shadow[unique_index]);
+			if (checksum != 0xff) {
+				// invalid shadow byte
+				break;
+			}
+		}
+
+		unique_attempts++;
+	} while (unique_index != 16 && unique_attempts < 10);
+
 	return type;
 }
 

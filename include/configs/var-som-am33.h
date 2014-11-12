@@ -59,16 +59,19 @@
 		"::off\0" \
 	"ramroot=/dev/ram0 rw ramdisk_size=65536 initrd=${rdaddr},64M\0" \
 	"ramrootfstype=ext2\0" \
-	"mmcargs=setenv bootargs console=${console} " \
+	"mmcargs=nand uid; setenv bootargs console=${console} " \
 		"${optargs} " \
+		"hwserial=${uniqueid} " \
 		"root=${mmcroot} " \
 		"rootfstype=${mmcrootfstype}\0" \
-	"usbargs=setenv bootargs console=${console} " \
+	"usbargs=nand uid; setenv bootargs console=${console} " \
 		"${optargs} " \
+		"hwserial=${uniqueid} " \
 		"root=${usbroot} " \
 		"rootfstype=${usbrootfstype}\0" \
-	"netargs=setenv bootargs console=${console} " \
+	"netargs=nand uid; setenv bootargs console=${console} " \
 		"${optargs} " \
+		"hwserial=${uniqueid} " \
 		"root=/dev/nfs " \
 		"nfsroot=${serverip}:${rootpath},${nfsopts} rw " \
 		"ip=dhcp\0" \
@@ -77,8 +80,9 @@
 	"importbootenv=echo Importing environment from mmc ...; " \
 		"env import -t $loadaddr $filesize\0" \
 	"dfu_alt_info_ram=" DFU_ALT_INFO_RAM "\0" \
-	"ramargs=setenv bootargs console=${console} " \
+	"ramargs=nand uid; setenv bootargs console=${console} " \
 		"${optargs} " \
+		"hwserial=${uniqueid} " \
 		"root=${ramroot} " \
 		"rootfstype=${ramrootfstype}\0" \
 	"loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}\0" \

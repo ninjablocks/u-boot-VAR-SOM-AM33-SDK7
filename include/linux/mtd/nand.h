@@ -82,6 +82,7 @@ extern void nand_wait_ready(struct mtd_info *mtd);
 #define NAND_CMD_READID		0x90
 #define NAND_CMD_ERASE2		0xd0
 #define NAND_CMD_PARAM		0xec
+#define NAND_CMD_READ_UNIQUE_ID	0xed
 #define NAND_CMD_GET_FEATURES	0xee
 #define NAND_CMD_SET_FEATURES	0xef
 #define NAND_CMD_RESET		0xff
@@ -559,6 +560,8 @@ struct nand_chip {
 	struct nand_bbt_descr *bbt_md;
 
 	struct nand_bbt_descr *badblock_pattern;
+
+	uint8_t unique_id[16];
 
 	void *priv;
 };
