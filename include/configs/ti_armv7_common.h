@@ -295,8 +295,9 @@
 #define BOOTCMD_NAND \
 	"mtdids=" MTDIDS_DEFAULT "\0" \
 	"mtdparts=" MTDPARTS_DEFAULT "\0" \
-	"nandargs=setenv bootargs console=${console} " \
+	"nandargs=nand uid; setenv bootargs console=${console} " \
 		"${optargs} " \
+		"hwserial=${uniqueid} " \
 		"root=${nandroot} " \
 		"rootfstype=${nandrootfstype}\0" \
 	"dfu_alt_info_nand=" DFU_ALT_INFO_NAND "\0" \
