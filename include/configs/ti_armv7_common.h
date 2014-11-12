@@ -310,7 +310,12 @@
 		"bootz ${loadaddr} - ${fdtaddr}\0" \
 	"bootcmd_nand=run nandboot;\0"
 
+#ifndef CONFIG_NINJA_SPHERE
 #define CONFIG_BOOTCOMMAND \
 	"for target in ${boot_targets}; do run bootcmd_${target}; done"
+#else
+#define CONFIG_BOOTCOMMAND \
+	"run ninja_boot_sequence; for target in ${boot_targets}; do run bootcmd_${target}; done"
+#endif
 
 #endif	/* __CONFIG_TI_ARMV7_COMMON_H__ */

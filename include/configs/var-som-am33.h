@@ -124,6 +124,23 @@
 		"run netargs; " \
 		"bootz ${loadaddr} - ${fdtaddr}\0" \
 	"findfdt=setenv fdtfile var-som-am33.dtb\0" \
+	"boot_legacy_mmc=run bootcmd_mmc0\0" \
+	"attempt_nand_dfu=setenv dfu_alt_info ${dfu_alt_info_nand}; dfu 0 nand 0\0" \
+	"boot_recovery_nand=run bootcmd_nand\0" \
+	"factory_boot_cmd=run attempt_nand_dfu; " \
+		"echo \" *** DFU exited (may not be plugged in), attempting recovery boot...\"; " \
+		"run boot_recovery_nand\0" \
+	"ninja_boot_sequence=" \
+		"if gpio input 20; then; " \
+			"echo \" *** Factory reset button down, attempting DFU...\"; " \
+			"run factory_boot_cmd; " \
+		"fi; " \
+		"echo \" *** Attempting normal boot...\"; " \
+		"run boot_legacy_mmc; " \
+		"echo \" *** Attempting recovery boot...\"; " \
+		"run boot_recovery_nand; " \
+		"echo \" *** Boot sequence failed, attempting DFU...\"; " \
+		"run factory_boot_cmd\0" \
 	BOOTCMD_COMMON \
 	BOOTCMD_NAND \
 	BOOTCMD_MMC \
