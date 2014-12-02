@@ -123,7 +123,7 @@
 		"tftp ${fdtaddr} ${fdtfile}; " \
 		"run netargs; " \
 		"bootz ${loadaddr} - ${fdtaddr}\0" \
-	"findfdt=setenv fdtfile var-som-am33.dtb\0" \
+	"findfdt=setenv fdtfile var-som-am33-ninja.dtb\0" \
 	"boot_legacy_mmc=run bootcmd_mmc0\0" \
 	"attempt_nand_dfu=setenv dfu_alt_info ${dfu_alt_info_nand}; dfu 0 nand 0\0" \
 	"boot_recovery_nand=run bootcmd_nand\0" \
