@@ -58,7 +58,8 @@ BIN_FILES-$(CONFIG_MX28) += mxsboot$(SFX)
 BIN_FILES-$(CONFIG_NETCONSOLE) += ncb$(SFX)
 BIN_FILES-$(CONFIG_SHA1_CHECK_UB_IMG) += ubsha1$(SFX)
 BIN_FILES-$(CONFIG_KIRKWOOD) += kwboot$(SFX)
-BIN_FILES-y += proftool(SFX)
+BIN_FILES-y += proftool$(SFX)
+BIN_FILES-y += crc32sum$(SFX)
 
 # Source files which exist outside the tools directory
 EXT_OBJ_FILES-$(CONFIG_BUILD_ENVCRC) += common/env_embedded.o
@@ -84,6 +85,8 @@ NOPED_OBJ_FILES-y += os_support.o
 NOPED_OBJ_FILES-y += pblimage.o
 NOPED_OBJ_FILES-y += proftool.o
 NOPED_OBJ_FILES-y += ublimage.o
+NOPED_OBJ_FILES-y += crc32sum.o
+
 OBJ_FILES-$(CONFIG_BUILD_ENVCRC) += envcrc.o
 OBJ_FILES-$(CONFIG_CMD_LOADS) += img2srec.o
 OBJ_FILES-$(CONFIG_CMD_NET) += gen_eth_addr.o
@@ -200,6 +203,11 @@ $(obj)xway-swap-bytes$(SFX):	$(obj)xway-swap-bytes.o
 	$(HOSTSTRIP) $@
 
 $(obj)mkenvimage$(SFX):	$(obj)crc32.o $(obj)mkenvimage.o \
+	$(obj)os_support.o
+	$(HOSTCC) $(HOSTCFLAGS) $(HOSTLDFLAGS) -o $@ $^
+	$(HOSTSTRIP) $@
+
+$(obj)crc32sum$(SFX): $(obj)crc32.o $(obj)crc32sum.o \
 	$(obj)os_support.o
 	$(HOSTCC) $(HOSTCFLAGS) $(HOSTLDFLAGS) -o $@ $^
 	$(HOSTSTRIP) $@
