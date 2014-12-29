@@ -29,23 +29,15 @@
 
 int main(int argc, char **argv)
 {
+	uint32_t crc;
 	const char *txt_filename = NULL;
 	int txt_fd;
 	struct stat txt_file_stat;
 	unsigned int filesize = 0;
 
-	unsigned char *dataptr;
 	unsigned char *filebuf = NULL;
-	 envsize = 0, datasize = 0;
-	int bigendian = 0;
-	int redundant = 0;
-	unsigned char padbyte = 0xff;
 
-	int option;
 	int ret = EXIT_SUCCESS;
-
-
-	int fp, ep;
 
 	if (argc < 1) {
 		fprintf(stderr, "usage: crc32sum filename\n");
