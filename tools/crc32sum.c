@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
 	crc = crc32(0, filebuf, filesize);
 
-	fprintf(stdout, "0x%08x", crc);
+	fprintf(stdout, "0x%08x\n", crc);
 
 	ret = close(txt_fd);
 
