@@ -39,12 +39,12 @@ int main(int argc, char **argv)
 
 	int ret = EXIT_SUCCESS;
 
-	if (argc < 1) {
+	if (argc < 2) {
 		fprintf(stderr, "usage: crc32sum filename\n");
 		return EXIT_FAILURE;
 	}
 
-	txt_filename = argv[0];
+	txt_filename = argv[1];
 	txt_fd = open(txt_filename, O_RDONLY);
 	if (txt_fd == -1) {
 		fprintf(stderr, "Can't open \"%s\": %s\n",
