@@ -183,7 +183,7 @@ $(obj)bmp_logo$(SFX):	$(obj)bmp_logo.o
 	$(HOSTCC) $(HOSTCFLAGS) $(HOSTLDFLAGS) -o $@ $^
 	$(HOSTSTRIP) $@
 
-$(obj)proftool(SFX):	$(obj)proftool.o
+$(obj)proftool$(SFX):	$(obj)proftool.o
 	$(HOSTCC) $(HOSTCFLAGS) $(HOSTLDFLAGS) -o $@ $^
 	$(HOSTSTRIP) $@
 
